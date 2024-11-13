@@ -1,0 +1,15 @@
+{
+    "metrics": {
+        "port": 8081,
+        "path": "/metrics"
+    },
+    "WatchPath": {
+        "path": "/test"
+    },
+    "Middleware": {
+        "endpoint": "https://test.svc.cluster.local" 
+    },
+    "ServiceOwner": {
+        "tenant": "testTenant"
+    }
+}

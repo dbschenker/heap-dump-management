@@ -1,0 +1,12 @@
+@startuml Architecture
+
+Application -> NotifySidecar: writes heap dump in shared volume
+NotifySidecar -> HeapDumpService: Request Upload URL
+HeapDumpService -> Vault: Encrypt AES Key with tenant key
+HeapDumpService -> AWS: Generate PreSigned upload URL to S3
+HeapDumpService -> NotifySidecar: Returns Key, Encrypted Key and URL
+NotifySidecar -> NotifySidecar: Encrypts Heap Dump
+NotifySidecar -> AWS: Uploads encrypted heap dump and encrypted AES Key to S3
+Application -> Application: Terminates
+
+@enduml

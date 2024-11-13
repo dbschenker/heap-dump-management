@@ -1,0 +1,15 @@
+@startuml
+(*) --> "Get Request Presigned URL and encryption key"
+
+if "ServiceAccount Token is valid" then
+
+  -->[true] "Create Vault transit client"
+  --> "Create AWS s3 Client"
+  --> "Generate AES Key"
+  --> "Encrypt AES Key with transit engine"
+  --> "Generate AWS Presigned URL"
+  --> "Return Presigned URL, AES key and encrypted AES key"
+else
+  -->[false] "Return 401"
+endif
+@enduml
