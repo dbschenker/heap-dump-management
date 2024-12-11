@@ -1,0 +1,68 @@
+---
+on:
+  release:
+    types: [created]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - image: heap-dump-service
+            dockerfile: heap-dump-service/Dockerfile
+            gopath: heap-dump-service
+            ghcr-image: ghcr.io/${{ github.repository }}/heap-dump-service
+          - image: notify-sidecar
+            dockerfile: notify-sidecar/Dockerfile
+            gopath: notify-sidecar
+            ghcr-image: ghcr.io/${{ github.repository }}/notify-sidecar
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ matrix.ghcr-image }}
+
+      - name: Go Test
+        run: |
+          cd ${{ matrix.gopath }}
+          go test -v ./...
+
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: false
+          tags: ${{ matrix.ghcr-image }}:latest
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Trivy Scan
+        uses: aquasecurity/trivy-action@v0.28.0
+        with:
+          image-ref: ${{ matrix.ghcr-image }}:latest
+          format: table
+          severity: CRITICAL,HIGH
+
+      - name: Push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ matrix.ghcr-image }}:${{ github.event.release.name }}"
+          labels: ${{ steps.meta.outputs.labels }}
