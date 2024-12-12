@@ -23,19 +23,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Go Test
-        run: |
-          cd ${{ env.PROJECT_PATH }}
-          go test -v ./...
-
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
           go-version: '1.22'
+
+      - name: Go Test
+        run: |
+          cd ${{ env.PROJECT_PATH }}
+          go test -v ./...
 
       - name: Run GoReleaser (snapshot)
         uses: goreleaser/goreleaser-action@v4
         with:
           workdir: ${{ env.PROJECT_PATH }}
           version: latest
-          args: check --snapshot --skip-publish --clean
+          args: build --snapshot --skip-publish --clean

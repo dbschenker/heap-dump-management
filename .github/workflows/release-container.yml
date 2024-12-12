@@ -65,6 +65,6 @@ jobs:
         with:
           context: ${{ matrix.image }}
           file: ${{ matrix.dockerfile }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ matrix.ghcr-image }}:${{ github.event.release.name }}"
           labels: ${{ steps.meta.outputs.labels }}
