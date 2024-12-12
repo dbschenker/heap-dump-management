@@ -13,7 +13,7 @@ env:
   PROJECT_PATH: heap-dump-companion
 
 jobs:
-  build-and-push:
+  build-companion:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,4 +38,4 @@ jobs:
         with:
           workdir: ${{ env.PROJECT_PATH }}
           version: latest
-          args: build --snapshot --skip-publish --clean
+          args: build --snapshot --clean

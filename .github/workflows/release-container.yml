@@ -6,7 +6,7 @@ on:
     types: [created]
 
 jobs:
-  build-and-push:
+  release-images:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -50,13 +50,13 @@ jobs:
           context: ${{ matrix.image }}
           file: ${{ matrix.dockerfile }}
           push: false
-          tags: ${{ matrix.ghcr-image }}:latest
+          tags: ${{ matrix.ghcr-image }}:${{ github.event.release.name }}"
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Trivy Scan
         uses: aquasecurity/trivy-action@0.29.0
         with:
-          image-ref: ${{ matrix.ghcr-image }}:latest
+          image-ref: ${{ matrix.ghcr-image }}:${{ github.event.release.name }}"
           format: table
           severity: CRITICAL,HIGH
 

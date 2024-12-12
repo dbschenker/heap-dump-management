@@ -9,7 +9,7 @@ on:
       - 'heap-dump-companion/**'
 
 jobs:
-  build-and-push:
+  build-and-push-images:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -46,6 +46,11 @@ jobs:
         run: |
           cd ${{ matrix.gopath }}
           go test -v ./...
+
+      - name: Debug Event Name
+        run: | 
+          echo "Event name: ${{ github.event_name }}"
+          echo "${{ github.event_name != 'pull_request' }}"
 
       - name: Build
         uses: docker/build-push-action@v6
