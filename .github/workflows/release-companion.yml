@@ -1,12 +1,9 @@
-name: Build, Test, Scan
+---
+name: Release heap-dump-companion
 
 on:
-  push:
-    branches:
-      - feature/tt/onboarding
-    paths-ignore:
-      - 'heap-dump-service/**'
-      - 'notify-sidecar/**'
+  release:
+    types: [created]
 
 env:
   PROJECT_PATH: heap-dump-companion
@@ -35,5 +32,6 @@ jobs:
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v4
         with:
+          workdir: ${{ env.PROJECT_PATH }}
           version: latest
           args: release --clean

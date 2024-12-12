@@ -1,4 +1,6 @@
 ---
+name: Release OCI images
+
 on:
   release:
     types: [created]
@@ -45,7 +47,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ${{ matrix.image }}
           file: ${{ matrix.dockerfile }}
           push: false
           tags: ${{ matrix.ghcr-image }}:latest
@@ -61,7 +63,7 @@ jobs:
       - name: Push
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ${{ matrix.image }}
           file: ${{ matrix.dockerfile }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ matrix.ghcr-image }}:${{ github.event.release.name }}"

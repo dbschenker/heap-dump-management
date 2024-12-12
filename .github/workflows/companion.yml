@@ -1,4 +1,5 @@
-name: Build, Test, Scan
+---
+name: Build heap-dump-companion
 
 on:
   push:
@@ -35,5 +36,6 @@ jobs:
       - name: Run GoReleaser (snapshot)
         uses: goreleaser/goreleaser-action@v4
         with:
+          workdir: ${{ env.PROJECT_PATH }}
           version: latest
           args: check --snapshot --skip-publish --clean
