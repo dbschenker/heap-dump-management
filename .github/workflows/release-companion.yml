@@ -41,3 +41,5 @@ jobs:
           workdir: ${{ env.PROJECT_PATH }}
           version: latest
           args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
