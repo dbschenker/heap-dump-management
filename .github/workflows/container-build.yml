@@ -47,11 +47,6 @@ jobs:
           cd ${{ matrix.gopath }}
           go test -v ./...
 
-      - name: Debug Event Name
-        run: | 
-          echo "Event name: ${{ github.event_name }}"
-          echo "${{ github.event_name != 'pull_request' }}"
-
       - name: Build
         uses: docker/build-push-action@v6
         with:
@@ -69,7 +64,7 @@ jobs:
           severity: CRITICAL,HIGH
 
       - name: Push
-        if: ${{ github.event_name != 'pull_request' }}
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.image }}
