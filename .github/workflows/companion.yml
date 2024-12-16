@@ -33,6 +33,12 @@ jobs:
           cd ${{ env.PROJECT_PATH }}
           go test -v ./...
 
+      - name: Trivy Scan
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          scan-type: 'fs'
+          path: ${{ env.PROJECT_PATH }}
+
       - name: Run GoReleaser (snapshot)
         uses: goreleaser/goreleaser-action@v4
         with:
