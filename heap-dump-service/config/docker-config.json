@@ -1,0 +1,18 @@
+{
+    "app": {
+        "port": 8080,
+        "bucket": ""
+    },
+    "vault": {
+        "vaultTransitMount": "eaas-heap-dump-service",
+        "vaultRole": "heap-dump-service",
+        "vaultAuthMountPath": "kubernetes-toolbox-ref-np-kubernetes"
+    },
+    "serviceAccount": {
+        "jwtokenMountPoint": "/var/run/secrets/kubernetes.io/serviceaccount/token"
+    },
+    "metrics": {
+        "port": 8081,
+        "path": "/metrics"
+    }
+}

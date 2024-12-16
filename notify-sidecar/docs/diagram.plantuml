@@ -1,0 +1,25 @@
+@startuml
+title Notify Sidecar
+
+start
+
+:Serve Metrics;
+while (Enter main loop)
+if (File being written) then (yes)
+  :Check file size;
+  if (File bigger than 16 MB) then (yes)
+    :wait until write operation is finished;
+    :Request presigned url and AES key;
+    :Encrypt Heap Dump;
+    :Upload encrypted data to S3 bucket;
+    :Cleanup data;
+    else (no)
+    :remove file;
+  endif
+else (no)
+  :Wait;
+endif
+endwhile (shutdown)
+
+stop
+@enduml

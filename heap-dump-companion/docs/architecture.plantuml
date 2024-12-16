@@ -1,0 +1,11 @@
+@startuml Architecture
+title heap dump companion
+
+start
+:create vault transit client;
+:decrypt aes key with transit client and tenant key;
+:decrypt heap dump;
+:write heap dump to disk;
+stop
+
+@enduml

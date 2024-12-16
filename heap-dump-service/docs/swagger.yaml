@@ -1,0 +1,72 @@
+basePath: /api/v1
+definitions:
+  ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  SigningRequest:
+    properties:
+      filename:
+        example: test_file.dump
+        type: string
+      namespace:
+        example: beacon
+        type: string
+      tenant:
+        example: cloud-beacon
+        type: string
+    type: object
+  SigningResponse:
+    properties:
+      aes-key:
+        type: string
+      encrypted-aes-key:
+        type: string
+      encrypted-aes-key-url:
+        type: string
+      url:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /upload:
+    post:
+      consumes:
+      - application/json
+      description: Request a new Signed Upload URL for a specific file
+      parameters:
+      - description: Request a new Signed Upload URL
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/SigningRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/SigningResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Get signed upload URL
+      tags:
+      - v1
+swagger: "2.0"

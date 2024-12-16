@@ -1,0 +1,6 @@
+.venv/
+.vscode/
+test/
+*.sh
+.git/
+.cache/

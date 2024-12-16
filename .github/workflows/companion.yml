@@ -1,0 +1,47 @@
+---
+name: Build heap-dump-companion
+
+on:
+  push:
+    branches:
+      - feature/tt/onboarding
+    paths-ignore:
+      - 'heap-dump-service/**'
+      - 'notify-sidecar/**'
+
+env:
+  PROJECT_PATH: heap-dump-companion
+
+jobs:
+  build-companion:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.22'
+
+      - name: Go Test
+        run: |
+          cd ${{ env.PROJECT_PATH }}
+          go test -v ./...
+
+      - name: Trivy Scan
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          scan-type: 'fs'
+          path: ${{ env.PROJECT_PATH }}
+
+      - name: Run GoReleaser (snapshot)
+        uses: goreleaser/goreleaser-action@v4
+        with:
+          workdir: ${{ env.PROJECT_PATH }}
+          version: latest
+          args: build --snapshot --clean

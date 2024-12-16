@@ -1,0 +1,15 @@
+{
+    "metrics": {
+        "port": 8081,
+        "path": "/metrics"
+    },
+    "WatchPath": {
+        "path": "/mnt/dumps"
+    },
+    "Middleware": {
+        "endpoint": "https://centraluploadservice.srv.cluster.local" 
+    },
+    "ServiceOwner": {
+        "tenant": "devops"
+    }
+}
