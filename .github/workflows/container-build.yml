@@ -3,8 +3,6 @@ name: Build, Test, Scan, and Push OCI Images
 
 on:
   push:
-    branches:
-      - feature/tt/onboarding
     paths-ignore:
       - 'heap-dump-companion/**'
 
