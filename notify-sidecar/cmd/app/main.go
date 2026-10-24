@@ -31,13 +31,13 @@ func handleNewHeapDump(fileSystem fs.FS, cfg config.AppConfig, file string) erro
 	if err != nil {
 		return errors.New(fmt.Sprintf("Error decoding aes key: %s", err.Error()))
 	}
-	entryptedFileLocation, err := utils.EncryptDump(fileSystem, strings.TrimPrefix(file, "/"), key)
+	encryptedFileLocation, err := utils.EncryptDump(fileSystem, strings.TrimPrefix(file, "/"), key)
 	if err != nil {
 		return errors.New(fmt.Sprintf("Error encrypting dump: %s", err.Error()))
 	}
-	encryptDumpFileHandler, err := os.Open(entryptedFileLocation)
+	encryptDumpFileHandler, err := os.Open(encryptedFileLocation)
 	if err != nil {
-		return errors.New(fmt.Sprintf("Error reading %s: %s", entryptedFileLocation, err.Error()))
+		return errors.New(fmt.Sprintf("Error reading %s: %s", encryptedFileLocation, err.Error()))
 	}
 	encryptedKeyFile, err := os.CreateTemp("/tmp", "key")
 	if err != nil {
@@ -57,7 +57,7 @@ func handleNewHeapDump(fileSystem fs.FS, cfg config.AppConfig, file string) erro
 
 	defer encryptedKeyFileHandler.Close()
 	defer os.Remove(encryptedKeyFile.Name())
-	defer os.Remove(entryptedFileLocation)
+	defer os.Remove(encryptedFileLocation)
 	defer os.Remove(file)
 
 	if err != nil {
@@ -94,7 +94,7 @@ func cleanupStaleFiles(basePath string, staleFiles *list.List, appConfig config.
 
 func pollChanges(appConfig config.AppConfig) {
 	c := time.Tick(10 * time.Second)
-	var fzise int64 = 0
+	var fsize int64 = 0
 	staleFiles := list.New()
 	for range c {
 		log.WithFields(log.Fields{
@@ -125,7 +125,7 @@ func pollChanges(appConfig config.AppConfig) {
 					"caller": "pollChanges",
 				}).Debug(fmt.Sprintf("%s is too small for a Heap Dump: %d", file.Name(), file.Size()))
 			} else {
-				if time.Now().Sub(file.ModTime()) > time.Second*15 && fzise == file.Size() {
+				if time.Now().Sub(file.ModTime()) > time.Second*15 && fsize == file.Size() {
 					log.WithFields(log.Fields{
 						"caller": "pollChanges",
 					}).Info(fmt.Sprintf("Processing file: %s modified at %v, with size %d", file.Name(), file.ModTime(), file.Size()))
@@ -137,7 +137,7 @@ func pollChanges(appConfig config.AppConfig) {
 			log.WithFields(log.Fields{
 				"caller": "pollChanges",
 			}).Debug(fmt.Sprintf("Write operation still in progress for Heap Dump %s", file.Name()))
-			fzise = file.Size()
+			fsize = file.Size()
 			time.Sleep(time.Second * 2)
 		}
 	}

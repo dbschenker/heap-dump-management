@@ -43,7 +43,7 @@ func TestBadEncryption(t *testing.T) {
 	rand.Read(test_key)
 
 	_, got := EncryptDump(fs, "test_heap_dump", test_key)
-	want := errors.New(fmt.Sprintf("Error initializing ARE Cipher: %s", "crypto/aes: invalid key size 8"))
+	want := errors.New(fmt.Sprintf("Error initializing AES Cipher: %s", "crypto/aes: invalid key size 8"))
 
 	if got == nil {
 		t.Errorf("AES should not be used with a key size of 8")

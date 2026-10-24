@@ -144,12 +144,12 @@ func TestVaultEncryptString(t *testing.T) {
 	}
 
 	transit := testClient.TransitWithMountPoint("transit")
-	plainTestResponse, err := transit.Decrypt("test-topic", &vaultTransit.TransitDecryptOptions{
+	plainTextResponse, err := transit.Decrypt("test-topic", &vaultTransit.TransitDecryptOptions{
 		Ciphertext: string(ret),
 	})
 
-	if plainTestResponse.Data.Plaintext != base64.URLEncoding.EncodeToString(rnd) {
-		t.Errorf("Decryption failed! want %v, got %v", string(rnd), plainTestResponse.Data.Plaintext)
+	if plainTextResponse.Data.Plaintext != base64.URLEncoding.EncodeToString(rnd) {
+		t.Errorf("Decryption failed! want %v, got %v", string(rnd), plainTextResponse.Data.Plaintext)
 	}
 
 }

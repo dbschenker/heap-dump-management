@@ -19,10 +19,10 @@ var transitMountPoint string
 
 var decryptCmd = &cobra.Command{
 	Use:   "decrypt",
-	Short: "Decrypt a provided file with a encrypted key using hashicorp vault",
+	Short: "Decrypt a provided file with an encrypted key using hashicorp vault",
 	Long: `Companion implementation intended to work with the general heap dump service.
 
-This command takes a encrypted heap dump, the encrypted AES Key of the heap dump and decrypts both
+This command takes an encrypted heap dump, the encrypted AES Key of the heap dump and decrypts both
 using the transit engine of hashicorp Vault. 
 
 Examples:
@@ -53,7 +53,7 @@ func init() {
 	rootCmd.AddCommand(decryptCmd)
 	decryptCmd.PersistentFlags().StringVarP(&heapDumpLocation, "input-file", "i", "", "Path to the encrypted heap dump")
 	decryptCmd.PersistentFlags().StringVarP(&output, "output-file", "o", "", "Desired output file after decryption")
-	decryptCmd.PersistentFlags().StringVarP(&aesKeyLocation, "key", "k", "", "Path to the encrypted key that should be used for dectyption")
+	decryptCmd.PersistentFlags().StringVarP(&aesKeyLocation, "key", "k", "", "Path to the encrypted key that should be used for decryption")
 	decryptCmd.PersistentFlags().StringVarP(&topic, "topic", "t", "", "Topic/Tenant owner of the heap dump to be decrypted")
 	decryptCmd.PersistentFlags().StringVarP(&transitMountPoint, "transit-mount-point", "T", "eaas-heap-dump-service", "Transit engine mount point in vault")
 

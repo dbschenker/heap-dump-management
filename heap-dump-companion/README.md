@@ -25,7 +25,7 @@ Make sure that you are signed into Vault and export your vault token via the env
 ```
 Companion implementation intended to work with the general heap dump service.
 
-This command takes a encrypted heap dump, the encrypted AES Key of the heap dump and decrypts both
+This command takes an encrypted heap dump, the encrypted AES Key of the heap dump and decrypts both
 using the transit engine of hashicorp Vault. 
 
 Examples:
@@ -38,7 +38,7 @@ Usage:
 Flags:
   -h, --help                         help for decrypt
   -i, --input-file string            Path to the encrypted heap dump
-  -k, --key string                   Path to the encrypted key that should be used for dectyption
+  -k, --key string                   Path to the encrypted key that should be used for decryption
   -o, --output-file string           Desired output file after decryption
   -t, --topic string                 Topic/Tenant owner of the heap dump to be decrypted
   -T, --transit-mount-point string   Transit engine mount point in vault (default "eaas-heap-dump-service")

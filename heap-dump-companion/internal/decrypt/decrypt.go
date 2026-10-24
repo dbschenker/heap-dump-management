@@ -19,7 +19,7 @@ func DecryptFile(fileSystem fs.FS, key []byte, encryptedFileLocation string, des
 	// Creating block of algorithm
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return errors.New(fmt.Sprintf("Error initializing ARE Cipher: %s", err.Error()))
+		return errors.New(fmt.Sprintf("Error initializing AES Cipher: %s", err.Error()))
 	}
 
 	// Creating GCM mode

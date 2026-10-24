@@ -134,7 +134,7 @@ func TestBadAESKey(t *testing.T) {
 		"var/run/secrets/kubernetes.io/serviceaccount/namespace": {Data: []byte("platform")},
 		"test_heap_dump": {Data: []byte("dummy")},
 	}
-	want := errors.New(fmt.Sprintf("Error encrypting dump: %s", "Error initializing ARE Cipher: crypto/aes: invalid key size 2"))
+	want := errors.New(fmt.Sprintf("Error encrypting dump: %s", "Error initializing AES Cipher: crypto/aes: invalid key size 2"))
 	got := handleNewHeapDump(fs, badConfig, "test_heap_dump")
 	if got == nil {
 		t.Errorf("This should produce an Error")

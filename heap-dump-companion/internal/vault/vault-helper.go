@@ -44,7 +44,7 @@ func GenerateTransitVaultClient() (*vaultTransit.Client, error) {
 func TransitDecryptString(client *vaultTransit.Client, mountPoint string, topicKey string, cypherText string) (string, error) {
 
 	transit := client.TransitWithMountPoint(mountPoint)
-	plainTestResponse, err := transit.Decrypt(topicKey, &vaultTransit.TransitDecryptOptions{
+	plainTextResponse, err := transit.Decrypt(topicKey, &vaultTransit.TransitDecryptOptions{
 		Ciphertext: cypherText,
 	})
 	if err != nil {
@@ -54,5 +54,5 @@ func TransitDecryptString(client *vaultTransit.Client, mountPoint string, topicK
 		return "", errors.New(fmt.Sprintf("Could not decrypt AES Key: %s", err.Error()))
 
 	}
-	return plainTestResponse.Data.Plaintext, nil
+	return plainTextResponse.Data.Plaintext, nil
 }
